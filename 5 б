@@ -1,0 +1,82 @@
+#include <gtk/gtk.h>  // подключаем библиотеку GTK+
+
+
+/* Функция, вызываемая на перерисовку содержимого окна */
+void on_draw_event (GtkWidget *widget, cairo_t *cr, gpointer data)
+{
+   
+    
+    cairo_set_source_rgb(cr, 1, 0, 0);
+    cairo_set_line_width (cr, 1);
+    for(int i=50; i<=450; i+=50){
+    cairo_move_to(cr, i, 100);
+    cairo_line_to(cr, i+25, 75);
+    cairo_line_to(cr, i+50, 100);
+    cairo_line_to(cr, i+25, 125);
+    cairo_line_to(cr, i, 100);
+    cairo_stroke_preserve(cr);                         
+    cairo_set_source_rgb(cr, 1, 0, 0);
+    cairo_fill(cr);
+    }
+    for(int i=100; i<=450; i+=150){
+    cairo_move_to(cr, i, 150);
+    cairo_line_to(cr, i+25, 125);
+    cairo_line_to(cr, i+50, 150);
+    cairo_line_to(cr, i+25, 175);
+    cairo_line_to(cr, i, 150);
+    cairo_stroke_preserve(cr);                         
+    cairo_set_source_rgb(cr, 1, 0, 0);
+    cairo_fill(cr);
+    }
+    for(int i=100; i<=450; i+=150){
+    cairo_move_to(cr, i, 50);
+    cairo_line_to(cr, i+25, 25);
+    cairo_line_to(cr, i+50, 50);
+    cairo_line_to(cr, i+25, 75);
+    cairo_line_to(cr, i, 50);
+    cairo_stroke_preserve(cr);                         
+    cairo_set_source_rgb(cr, 1, 0, 0);
+    cairo_fill(cr);
+    }
+}
+ 
+
+ 
+/* Основная функция */
+int main( int argc, char *argv[])
+{
+    /* запуск и инициализация GTK+ */
+    gtk_init(&argc, &argv);
+ 
+    /* создать окно и установить свойства*/
+    GtkWidget *window;
+    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
+    gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
+    gtk_window_set_title(GTK_WINDOW(window), "Пример рисования линии");
+    gtk_container_set_border_width (GTK_CONTAINER (window), 10);
+    
+    /* создать виджет - вертикального расположения элементов   */
+    GtkWidget *vbox;
+    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 1);
+    gtk_container_add(GTK_CONTAINER (window), vbox);
+ 
+
+    /* создать виджет - область для рисования   */
+    GtkWidget *drawing_area;
+    drawing_area = gtk_drawing_area_new();
+    
+    /* разместить область в верхней части окна*/
+    gtk_box_pack_start (GTK_BOX(vbox), drawing_area, TRUE, TRUE, 10);
+    
+    /* Событие отрисовки содержимого области */
+    g_signal_connect(G_OBJECT(drawing_area), "draw", G_CALLBACK(on_draw_event), NULL);
+ 
+   
+    /* отобразить окно и все его виджеты */
+    gtk_widget_show_all(window);
+ 
+    /* передаём управление циклу событий GTK+ */
+    gtk_main();
+ 
+}
